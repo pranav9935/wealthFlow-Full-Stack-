@@ -1,0 +1,38 @@
+package com.wealthmanager.controller;
+
+import com.wealthmanager.dto.LoginRequestDTO;
+import com.wealthmanager.dto.RegisterRequestDTO;
+import com.wealthmanager.service.impl.LoginService;
+import com.wealthmanager.service.impl.UserServiceAuth;
+import jakarta.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/auth")
+public class Controller {
+
+    private final UserServiceAuth userService;
+    private final LoginService loginservice;
+    public Controller(UserServiceAuth userService, LoginService loginservice) {
+        this.userService = userService;
+        this.loginservice = loginservice;
+    }
+
+    /**
+     * Register new user
+     */
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDTO request) {
+        String response = userService.register(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDTO request) {
+        return ResponseEntity.ok(loginservice.login(request));
+    }
+
+
+}

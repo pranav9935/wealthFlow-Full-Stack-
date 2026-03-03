@@ -1,0 +1,1 @@
+package com.wealthmanager.config;
