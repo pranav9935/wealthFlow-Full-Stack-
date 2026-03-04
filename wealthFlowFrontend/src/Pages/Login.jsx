@@ -1,42 +1,94 @@
 import { useState } from "react";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Login() {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    try {
-      const res = await api.post("/auth/login", { email, password });
-      localStorage.setItem("token", res.data);
+  const handleLogin = async (e) => {
+
+  e.preventDefault();
+
+  try {
+
+    const res = await api.post("/auth/login", {
+      email,
+      password
+    });
+
+    localStorage.setItem("token", res.data);
+
+    toast.success("Login successful");
+
+    setTimeout(() => {
       navigate("/dashboard");
-    } catch (err) {
-      alert("Invalid credentials");
-    }
-  };
+    }, 1000);
 
+  } catch (err) {
+
+    toast.error("Invalid email or password");
+
+  }
+
+};
   return (
-    <div className="card">
-      <h2>Wealth Manager</h2>
 
-      <input
-        type="email"
-        placeholder="Enter Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+    <div className="login-container">
 
-      <input
-        type="password"
-        placeholder="Enter Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+      <div className="login-card">
 
-      <button onClick={handleLogin}>Login</button>
+        <h1 className="logo">WealthFlow</h1>
+
+        <p className="subtitle">
+          Smart Investment Portfolio Manager
+        </p>
+
+        <form onSubmit={handleLogin}>
+
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <input
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button type="submit">
+            Login
+          </button>
+
+        </form>
+
+        <div className="divider"></div>
+
+        <p className="register-text">
+          Don't have an account?
+        </p>
+
+        <button
+          className="register-btn"
+          onClick={() => navigate("/register")}
+        >
+          Create Account
+        </button>
+
+      </div>
+
     </div>
+
   );
 }
 
