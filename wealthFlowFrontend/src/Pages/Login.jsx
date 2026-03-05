@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -10,32 +10,44 @@ function Login() {
 
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      navigate("/dashboard", { replace: true });
+    }
+
+  }, [navigate]);
+
   const handleLogin = async (e) => {
 
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
+    try {
 
-    const res = await api.post("/auth/login", {
-      email,
-      password
-    });
+      const res = await api.post("/auth/login", {
+        email,
+        password
+      });
 
-    localStorage.setItem("token", res.data);
+      localStorage.setItem("token", res.data);
 
-    toast.success("Login successful");
+      toast.success("Login successful");
 
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 1000);
+      setTimeout(() => {
+        navigate("/dashboard", { replace: true });
+      }, 1000);
 
-  } catch (err) {
+    } catch (err) {
 
-    toast.error("Invalid email or password");
+      toast.error("Invalid email or password");
 
-  }
+    }
 
-};
+  };
+
   return (
 
     <div className="login-container">

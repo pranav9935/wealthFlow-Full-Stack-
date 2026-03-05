@@ -18,13 +18,13 @@ public class Investment {
     private Long id;
 
     private String stockSymbol;
+    
+    private String stockName;
 
     private Integer quantity;
 
     private Double buyPrice;
-
     private LocalDateTime createdAt;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

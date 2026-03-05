@@ -21,6 +21,7 @@ public class InvestmentService implements IInvestmentService {
 
         Investment investment = Investment.builder()
                 .stockSymbol(request.getStockSymbol())
+                .stockName(request.getStockName())
                 .quantity(request.getQuantity())
                 .buyPrice(request.getBuyPrice())
                 .createdAt(LocalDateTime.now())
