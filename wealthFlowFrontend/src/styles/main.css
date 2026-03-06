@@ -1,17 +1,20 @@
+html, body {
+  overflow-y: auto;
+}
+
+
 body {
   margin: 0;
   font-family: "Segoe UI", Arial, sans-serif;
   background-color: #f5f7fa;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 /* Main container */
 
 .login-container {
   width: 100%;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -181,13 +184,18 @@ button:hover {
 
 .dashboard-container {
   width: 900px;
-  margin: auto;
+  margin: 40px auto;
 }
 
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 0;
+  background: #f5f7fa;
+  padding: 10px 0;
+  z-index: 10;
 }
 
 .logout-btn {

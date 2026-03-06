@@ -31,31 +31,42 @@ public class DashboardService implements IDashboardService {
 
         for (Investment inv : investments) {
 
-            double currentPrice = stockPriceService.getCurrentPrice(inv.getStockSymbol());
+            double currentPrice = round(stockPriceService.getCurrentPrice(inv.getStockSymbol()));
 
-            double investedAmount = inv.getBuyPrice() * inv.getQuantity();
-            double currentAmount = currentPrice * inv.getQuantity();
+            double investedAmount = round(inv.getBuyPrice() * inv.getQuantity());
+            double currentAmount = round(currentPrice * inv.getQuantity());
+            double profit = round(currentAmount - investedAmount);
 
             totalInvestment += investedAmount;
             currentValue += currentAmount;
 
             investmentViews.add(
                     new InvestmentViewDTO(
-                           inv.getStockSymbol(),
-                           inv.getStockName(),
+                            inv.getStockSymbol(),
+                            inv.getStockName(),
                             inv.getQuantity(),
-                            inv.getBuyPrice(),
+                            round(inv.getBuyPrice()),
                             currentPrice,
-                            currentAmount - investedAmount
+                            currentAmount,
+                            profit
                     )
             );
         }
 
+        // Round totals before sending to frontend
+        totalInvestment = round(totalInvestment);
+        currentValue = round(currentValue);
+        double totalProfit = round(currentValue - totalInvestment);
+
         return new DashboardResponseDTO(
                 totalInvestment,
                 currentValue,
-                currentValue - totalInvestment,
+                totalProfit,
                 investmentViews
         );
+    }
+
+    private double round(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 }

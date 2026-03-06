@@ -12,6 +12,7 @@ public class InvestmentViewDTO {
     private int quantity;
     private double buyPrice;
     private double currentPrice;
+     private double currentValue;
     private double profit;
 
 }

@@ -200,11 +200,12 @@ const handleLogout = () => {
 
           <thead>
             <tr>
-              <th>Stock Name</th>
-              <th>Symbol</th>
-              <th>Quantity</th>
-              <th>Buy Price</th>
-              <th>Current Price</th>
+            <th>Stock Name</th>
+            <th>Symbol</th>
+            <th>Quantity</th>
+            <th>Avg Buy Price</th>
+            <th>Current Price</th>
+            <th>Current Value</th>
             </tr>
           </thead>
 
@@ -216,8 +217,11 @@ const handleLogout = () => {
 <td>{stock.stockName}</td>
 <td>{stock.stockSymbol}</td>
 <td>{stock.quantity}</td>
-<td>{stock.buyPrice}</td>
-<td>{stock.currentPrice}</td>
+<td>${stock.buyPrice.toFixed(2)}</td>
+<td>${stock.currentPrice.toFixed(2)}</td>
+<td className={stock.profit >= 0 ? "profit" : "loss"}>
+  ${stock.currentValue.toFixed(2)}
+</td>
 </tr>
 
 ))}
