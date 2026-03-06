@@ -244,3 +244,26 @@ th, td {
   border-bottom: 1px solid #eee;
   text-align: center;
 }
+
+.loading-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #2563eb;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

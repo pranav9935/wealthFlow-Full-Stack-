@@ -19,7 +19,7 @@ function RegisterSuccess() {
           You can now login and start managing your investments.
         </p>
 
-        <button onClick={() => navigate("/")}>
+       <button onClick={() => navigate("/login", { replace: true })}>
           Go to Login
         </button>
 

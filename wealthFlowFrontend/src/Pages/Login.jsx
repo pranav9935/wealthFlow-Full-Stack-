@@ -11,15 +11,15 @@ function Login() {
   const navigate = useNavigate();
 
 
-  useEffect(() => {
+useEffect(() => {
 
-    const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
-    if (token) {
-      navigate("/dashboard", { replace: true });
-    }
+  if (token) {
+    navigate("/dashboard", { replace: true });
+  }
 
-  }, [navigate]);
+}, [navigate]);
 
   const handleLogin = async (e) => {
 
@@ -32,7 +32,7 @@ function Login() {
         password
       });
 
-      localStorage.setItem("token", res.data);
+    sessionStorage.setItem("token", res.data);
 
       toast.success("Login successful");
 

@@ -9,12 +9,12 @@ function Dashboard() {
   const [portfolio, setPortfolio] = useState(null);
   const [stockName, setStockName] = useState("");
   const [stockSymbol, setStockSymbol] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [buyPrice, setBuyPrice] = useState("");
+ const [quantity, setQuantity] = useState(0);
+const [buyPrice, setBuyPrice] = useState(0);
 
 const fetchDashboard = async () => {
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   if (!token) {
     navigate("/login", { replace: true });
@@ -31,7 +31,7 @@ const fetchDashboard = async () => {
 
     if (err.response && err.response.status === 401) {
 
-      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
 
       navigate("/login", { replace: true });
 
@@ -47,7 +47,7 @@ const fetchDashboard = async () => {
 
 useEffect(() => {
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   if (!token) {
     navigate("/login", { replace: true });
@@ -55,6 +55,20 @@ useEffect(() => {
   }
 
   fetchDashboard();
+
+  const handleBackButton = () => {
+
+    sessionStorage.removeItem("token");
+
+    navigate("/login", { replace: true });
+
+  };
+
+  window.addEventListener("popstate", handleBackButton);
+
+  return () => {
+    window.removeEventListener("popstate", handleBackButton);
+  };
 
 }, [navigate]);
 
@@ -86,14 +100,18 @@ useEffect(() => {
 
 const handleLogout = () => {
 
-  localStorage.removeItem("token");
+ sessionStorage.removeItem("token");
 
   navigate("/login", { replace: true });
 
 };
-  if (!portfolio) {
-    return <h2>Loading Dashboard</h2>;
-  }
+ if (!portfolio) {
+  return (
+    <div className="loading-container">
+      <div className="loader"></div>
+    </div>
+  );
+}
 
   return (
 
@@ -156,14 +174,14 @@ const handleLogout = () => {
           type="number"
           placeholder="Quantity"
           value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
+          onChange={(e) => setQuantity(Number(e.target.value))}
         />
 
         <input
           type="number"
           placeholder="Buy Price"
           value={buyPrice}
-          onChange={(e) => setBuyPrice(e.target.value)}
+          onChange={(e) => setBuyPrice(Number(e.target.value))}
         />
 
         <button onClick={handleAddInvestment}>
@@ -190,21 +208,21 @@ const handleLogout = () => {
             </tr>
           </thead>
 
-          <tbody>
+      <tbody>
 
-            {portfolio.investments.map((stock, index) => (
+{portfolio.investments.map((stock, index) => (
 
-              <tr key={index}>
-                <td>{stock.stockName}</td>
-                <td>{stock.symbol}</td>
-                <td>{stock.quantity}</td>
-                <td>{stock.buyPrice}</td>
-                <td>{stock.currentPrice}</td>
-              </tr>
+<tr key={index}>
+<td>{stock.stockName}</td>
+<td>{stock.stockSymbol}</td>
+<td>{stock.quantity}</td>
+<td>{stock.buyPrice}</td>
+<td>{stock.currentPrice}</td>
+</tr>
 
-            ))}
+))}
 
-          </tbody>
+</tbody>
 
         </table>
 

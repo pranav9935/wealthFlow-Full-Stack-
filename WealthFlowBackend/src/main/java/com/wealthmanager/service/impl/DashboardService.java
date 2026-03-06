@@ -41,7 +41,8 @@ public class DashboardService implements IDashboardService {
 
             investmentViews.add(
                     new InvestmentViewDTO(
-                            inv.getStockSymbol(),
+                           inv.getStockSymbol(),
+                           inv.getStockName(),
                             inv.getQuantity(),
                             inv.getBuyPrice(),
                             currentPrice,

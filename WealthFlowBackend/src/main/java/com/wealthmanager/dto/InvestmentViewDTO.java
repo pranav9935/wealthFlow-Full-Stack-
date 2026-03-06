@@ -8,6 +8,7 @@ import lombok.Getter;
 public class InvestmentViewDTO {
 
     private String stockSymbol;
+     private String stockName;
     private int quantity;
     private double buyPrice;
     private double currentPrice;
