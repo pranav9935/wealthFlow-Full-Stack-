@@ -42,9 +42,13 @@ useEffect(() => {
 
     } catch (err) {
 
-      toast.error("Invalid email or password");
+  if (err.response && err.response.data) {
+    toast.error(err.response.data);
+  } else {
+    toast.error("Login failed. Please try again.");
+  }
 
-    }
+}
 
   };
 

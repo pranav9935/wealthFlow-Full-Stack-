@@ -25,8 +25,10 @@ function Register() {
 
     toast.success("Account created successfully");
 
-   setTimeout(() => {
-  navigate("/register-success", { replace: true });
+ setTimeout(() => {
+  navigate("/verify-otp", {
+    state: { email }
+  });
 }, 1200);
 
   } catch (err) {

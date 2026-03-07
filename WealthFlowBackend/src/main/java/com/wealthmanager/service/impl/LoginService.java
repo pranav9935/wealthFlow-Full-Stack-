@@ -28,7 +28,9 @@ public class LoginService implements ILoginService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-
+                if (!user.isVerified()) {
+                throw new RuntimeException("Please verify your email.");
+            }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");

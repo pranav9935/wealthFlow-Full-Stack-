@@ -4,6 +4,7 @@ import Dashboard from "./Pages/Dashboard";
 import Register from "./Pages/Register";
 import RegisterSuccess from "./Pages/RegisterSuccess";
 import ProtectedRoute from "./components/ProtectedRoute";
+import VerifyOtp from "./Pages/VerifyOtp";
 
 function App() {
 
@@ -17,7 +18,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/register-success" element={<RegisterSuccess />} />
-
+        <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route
           path="/dashboard"
           element={

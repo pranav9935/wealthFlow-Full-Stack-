@@ -2,6 +2,7 @@ package com.wealthmanager.controller;
 
 import com.wealthmanager.dto.LoginRequestDTO;
 import com.wealthmanager.dto.RegisterRequestDTO;
+import com.wealthmanager.dto.VerifyOtpDTO;
 import com.wealthmanager.service.impl.LoginService;
 import com.wealthmanager.service.impl.UserServiceAuth;
 import jakarta.validation.Valid;
@@ -33,6 +34,19 @@ public class AuthController {
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDTO request) {
         return ResponseEntity.ok(loginservice.login(request));
     }
+
+    @PostMapping("/verify-otp")
+        public ResponseEntity<String> verifyOtp(@RequestBody VerifyOtpDTO request) {
+
+            return ResponseEntity.ok(userService.verifyOtp(request));
+        }
+
+        @PostMapping("/resend-otp")
+public ResponseEntity<String> resendOtp(@RequestBody VerifyOtpDTO request) {
+
+    return ResponseEntity.ok(userService.resendOtp(request.getEmail()));
+
+}
 
 
 }
