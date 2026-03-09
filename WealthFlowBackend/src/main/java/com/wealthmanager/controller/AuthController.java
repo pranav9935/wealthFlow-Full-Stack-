@@ -7,6 +7,8 @@ import com.wealthmanager.service.impl.LoginService;
 import com.wealthmanager.service.impl.UserServiceAuth;
 import jakarta.validation.Valid;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +48,14 @@ public ResponseEntity<String> resendOtp(@RequestBody VerifyOtpDTO request) {
 
     return ResponseEntity.ok(userService.resendOtp(request.getEmail()));
 
+}
+
+@PostMapping("/request-verification")
+public ResponseEntity<String> requestVerification(@RequestBody Map<String, String> body) {
+
+    String email = body.get("email");
+
+    return ResponseEntity.ok(userService.requestVerification(email));
 }
 
 

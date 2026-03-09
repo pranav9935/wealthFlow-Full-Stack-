@@ -5,6 +5,9 @@ import Register from "./Pages/Register";
 import RegisterSuccess from "./Pages/RegisterSuccess";
 import ProtectedRoute from "./components/ProtectedRoute";
 import VerifyOtp from "./Pages/VerifyOtp";
+import VerifyAccount from "./Pages/VerifyAccount";
+
+
 
 function App() {
 
@@ -27,6 +30,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/verify-account" element={<VerifyAccount />} />
 
       </Routes>
 

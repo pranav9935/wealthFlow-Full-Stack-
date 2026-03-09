@@ -10,16 +10,15 @@ function Login() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
 
-useEffect(() => {
+    const token = sessionStorage.getItem("token");
 
-  const token = sessionStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard", { replace: true });
+    }
 
-  if (token) {
-    navigate("/dashboard", { replace: true });
-  }
-
-}, [navigate]);
+  }, [navigate]);
 
   const handleLogin = async (e) => {
 
@@ -32,7 +31,7 @@ useEffect(() => {
         password
       });
 
-    sessionStorage.setItem("token", res.data);
+      sessionStorage.setItem("token", res.data);
 
       toast.success("Login successful");
 
@@ -42,13 +41,13 @@ useEffect(() => {
 
     } catch (err) {
 
-  if (err.response && err.response.data) {
-    toast.error(err.response.data);
-  } else {
-    toast.error("Login failed. Please try again.");
-  }
+      if (err.response && err.response.data) {
+        toast.error(err.response.data);
+      } else {
+        toast.error("Login failed. Please try again.");
+      }
 
-}
+    }
 
   };
 
@@ -100,6 +99,16 @@ useEffect(() => {
         >
           Create Account
         </button>
+
+        <p className="verify-text">
+          Haven't verified your account?{" "}
+          <span
+            className="verify-link"
+            onClick={() => navigate("/verify-account")}
+          >
+            Verify
+          </span>
+        </p>
 
       </div>
 

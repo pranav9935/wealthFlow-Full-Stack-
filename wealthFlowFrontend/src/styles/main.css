@@ -270,6 +270,30 @@ th, td {
   height: 40px;
   animation: spin 1s linear infinite;
 }
+.verify-text {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.verify-link {
+  color: #2563eb;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.verify-link:hover {
+  text-decoration: underline;
+}
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid white;
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: auto;
+}
 
 @keyframes spin {
   0% { transform: rotate(0deg); }

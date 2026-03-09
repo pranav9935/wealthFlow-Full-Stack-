@@ -137,4 +137,32 @@ public String resendOtp(String email) {
     return "OTP sent to email";
 }
 
+public String requestVerification(String email) {
+
+    User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("Account does not exist"));
+
+    if (user.isVerified()) {
+        throw new RuntimeException("Account already verified");
+    }
+
+    String otp = OtpUtil.generateOtp();
+
+    OtpVerification otpEntity = otpRepository.findByEmail(email)
+            .orElse(
+                    OtpVerification.builder()
+                            .email(email)
+                            .build()
+            );
+
+    otpEntity.setOtp(otp);
+    otpEntity.setExpiryTime(LocalDateTime.now().plusMinutes(5));
+
+    otpRepository.save(otpEntity);
+
+    emailService.sendOtp(email, otp);
+
+    return "OTP sent to email";
+}
+
 }
