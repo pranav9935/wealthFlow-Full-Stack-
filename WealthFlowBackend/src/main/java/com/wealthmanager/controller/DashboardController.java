@@ -17,6 +17,9 @@ public class DashboardController {
 
     @GetMapping
     public Object getDashboard(Authentication authentication) {
+         if (authentication == null) {
+        throw new RuntimeException("Unauthorized access");
+    }
 
         String email = authentication.getName();
 

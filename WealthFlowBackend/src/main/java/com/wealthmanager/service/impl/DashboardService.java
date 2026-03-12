@@ -7,6 +7,8 @@ import com.wealthmanager.repository.InvestmentRepository;
 import com.wealthmanager.service.IDashboardService;
 import com.wealthmanager.service.IStockPriceService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class DashboardService implements IDashboardService {
 
     private final InvestmentRepository investmentRepository;
     private final IStockPriceService stockPriceService;
+     private final SimpMessagingTemplate messagingTemplate;
 
     @Override
     public DashboardResponseDTO getDashboard(User user) {
@@ -39,6 +42,7 @@ public class DashboardService implements IDashboardService {
 
             totalInvestment += investedAmount;
             currentValue += currentAmount;
+            System.out.println("Current price for " + inv.getStockSymbol() + " = " + currentPrice);
 
             investmentViews.add(
                     new InvestmentViewDTO(
@@ -58,12 +62,16 @@ public class DashboardService implements IDashboardService {
         currentValue = round(currentValue);
         double totalProfit = round(currentValue - totalInvestment);
 
-        return new DashboardResponseDTO(
-                totalInvestment,
-                currentValue,
-                totalProfit,
-                investmentViews
-        );
+   DashboardResponseDTO response = new DashboardResponseDTO(
+        totalInvestment,
+        currentValue,
+        totalProfit,
+        investmentViews
+);
+System.out.println("Sending update to websocket");
+
+messagingTemplate.convertAndSend("/topic/portfolio/" + user.getEmail(), response);
+return response;
     }
 
     private double round(double value) {

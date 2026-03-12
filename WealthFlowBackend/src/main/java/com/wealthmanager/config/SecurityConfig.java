@@ -27,11 +27,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()).cors(cors -> {})
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/test/**").authenticated()
-                        .anyRequest().authenticated()
-                )
+               .authorizeHttpRequests(auth -> auth
+        .requestMatchers("/api/auth/**").permitAll()
+        .requestMatchers("/ws").permitAll()
+          .requestMatchers("/api/stocks/**").permitAll()
+        .requestMatchers("/topic/**").permitAll()
+        .requestMatchers("/api/test/**").authenticated()
+        .anyRequest().authenticated()
+           )
+                
                 .formLogin(form -> form.disable())
                 .httpBasic(httpBasic -> httpBasic.disable());
 

@@ -11,4 +11,5 @@ public interface InvestmentRepository extends JpaRepository<Investment, Long> {
 
     List<Investment> findByUser(User user);
     Optional<Investment> findByUserAndStockSymbol(User user, String stockSymbol); 
+    
 }

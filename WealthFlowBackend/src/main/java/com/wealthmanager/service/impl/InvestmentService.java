@@ -4,7 +4,7 @@ import com.wealthmanager.dto.InvestmentRequestDTO;
 import com.wealthmanager.entity.Investment;
 import com.wealthmanager.entity.User;
 import com.wealthmanager.repository.InvestmentRepository;
-import com.wealthmanager.service.IInvestmentService;
+
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
@@ -14,39 +14,34 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class InvestmentService implements IInvestmentService {
+public class InvestmentService  {
 
     private final InvestmentRepository investmentRepository;
 
-  @Override
-public void addInvestment(InvestmentRequestDTO request, User user) {
+ public void buyStock(InvestmentRequestDTO request, User user) {
 
-    Optional<Investment> existingInvestment =
+    Optional<Investment> existing =
             investmentRepository.findByUserAndStockSymbol(user, request.getStockSymbol());
 
-    if (existingInvestment.isPresent()) {
+    if(existing.isPresent()) {
 
-        Investment inv = existingInvestment.get();
+        Investment inv = existing.get();
 
-        int oldQty = inv.getQuantity();
-        double oldPrice = inv.getBuyPrice();
+        int newQty = inv.getQuantity() + request.getQuantity();
 
-        int newQty = request.getQuantity();
-        double newPrice = request.getBuyPrice();
+        double newAvgPrice =
+                ((inv.getBuyPrice() * inv.getQuantity())
+                + (request.getBuyPrice() * request.getQuantity()))
+                / newQty;
 
-        int totalQty = oldQty + newQty;
-
-        double avgPrice =
-                ((oldQty * oldPrice) + (newQty * newPrice)) / totalQty;
-
-        inv.setQuantity(totalQty);
-        inv.setBuyPrice(avgPrice);
+        inv.setQuantity(newQty);
+        inv.setBuyPrice(newAvgPrice);
 
         investmentRepository.save(inv);
 
     } else {
 
-        Investment investment = Investment.builder()
+        Investment inv = Investment.builder()
                 .stockSymbol(request.getStockSymbol())
                 .stockName(request.getStockName())
                 .quantity(request.getQuantity())
@@ -55,9 +50,34 @@ public void addInvestment(InvestmentRequestDTO request, User user) {
                 .user(user)
                 .build();
 
-        investmentRepository.save(investment);
+        investmentRepository.save(inv);
+    }
+}
 
+public void sellStock(InvestmentRequestDTO request, User user) {
+
+    Investment inv = investmentRepository
+            .findByUserAndStockSymbol(user, request.getStockSymbol())
+            .orElseThrow(() -> new RuntimeException("Stock not owned"));
+
+    if(request.getQuantity() > inv.getQuantity()) {
+        throw new RuntimeException("You don't have enough quantity");
     }
 
+    int remaining = inv.getQuantity() - request.getQuantity();
+
+    if(remaining == 0) {
+
+        investmentRepository.delete(inv);
+
+    } else {
+
+        inv.setQuantity(remaining);
+        investmentRepository.save(inv);
+
+    }
 }
+
+
+
 }
