@@ -26,4 +26,4 @@ services:
     depends_on:
       - kafka
     environment:
-      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_PASSWORD: gvxmqxqlvdaaftsf
