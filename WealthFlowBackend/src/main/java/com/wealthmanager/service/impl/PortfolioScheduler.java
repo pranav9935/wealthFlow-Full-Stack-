@@ -18,7 +18,7 @@ public class PortfolioScheduler {
     private final IDashboardService dashboardService;
     private final StockPriceProducer producer;
 
-    @Scheduled(fixedRate = 300000) // 5 minutes
+
     public void updatePortfolios() {
        for (User user : userRepository.findAll()) {
 
@@ -33,3 +33,5 @@ public class PortfolioScheduler {
     }
 
 }
+/*  @Scheduled(fixedRate = 300000) */   
+

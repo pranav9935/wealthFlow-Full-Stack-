@@ -16,10 +16,11 @@ public class EmailService {
 
         SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setTo(email);
-        message.setSubject("WealthFlow Email Verification");
-        message.setText("Your OTP is: " + otp);
+    message.setFrom("pranavmishra9807@gmail.com");
+    message.setTo(email);
+    message.setSubject("WealthFlow Email Verification");
+    message.setText("Your OTP is: " + otp);
 
-        mailSender.send(message);
+    mailSender.send(message);
     }
 }
