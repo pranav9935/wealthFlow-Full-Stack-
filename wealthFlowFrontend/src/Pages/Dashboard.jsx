@@ -69,7 +69,7 @@ function Dashboard() {
     const email = JSON.parse(atob(token.split(".")[1])).sub;
 
     const client = new Client({
-      brokerURL: "ws://localhost:8080/ws",
+      brokerURL: "wss://trustworthy-blessing-production.up.railway.app/ws",
       reconnectDelay: 5000
     });
 
