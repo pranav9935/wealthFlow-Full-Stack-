@@ -1,9 +1,10 @@
 package com.wealthmanager.config;
-
+import org.springframework.http.HttpMethod;
 import com.wealthmanager.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -33,6 +34,7 @@ public class SecurityConfig {
           .requestMatchers("/api/stocks/**").permitAll()
         .requestMatchers("/topic/**").permitAll()
         .requestMatchers("/api/test/**").authenticated()
+        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
         .anyRequest().authenticated()
            )
                 
