@@ -94,7 +94,7 @@ function Login() {
           <p className="demo-title">Demo Login</p>
 
           <p>Email: <b>pranavmishra9807@gmail.com</b></p>
-          <p>Password: <b>12345</b></p>
+          <p>Password: <b>123456</b></p>
 
         </div>
 
