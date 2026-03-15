@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.wealthmanager.security.JwtAuthenticationFilter;
@@ -24,41 +25,25 @@ public class SecurityConfig {
         this.corsConfigurationSource = corsConfigurationSource;
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+   @Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
-            .csrf(csrf -> csrf.disable())
+    http
+        .csrf(csrf -> csrf.disable())
 
-            // Enable CORS
-            .cors(cors -> cors.configurationSource(corsConfigurationSource))
+        .cors(cors -> cors.configurationSource(corsConfigurationSource))
 
-            // JWT should not use sessions
-            .sessionManagement(session ->
-                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-            .authorizeHttpRequests(auth -> auth
-
-                    // allow preflight requests
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-                    // public endpoints
-                    .requestMatchers("/api/auth/**").permitAll()
-
-                    // websocket
-                    .requestMatchers("/ws/**").permitAll()
-                    .requestMatchers("/topic/**").permitAll()
-
-                    // everything else secured
-                    .anyRequest().authenticated()
-            );
-
-        // JWT filter
-        http.addFilterBefore(
-                jwtAuthenticationFilter,
-                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
+        .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/ws/**").permitAll()
+                .requestMatchers("/topic/**").permitAll()
+                .anyRequest().authenticated()
         );
 
-        return http.build();
-    }
+    http.addFilterBefore(jwtAuthenticationFilter,
+            UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
+}
 }
