@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/wealthflow?allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: root123
+    url: jdbc:postgresql://ep-little-moon-a1i65h43-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+    username: neondb_owner
+    password: npg_dQ4Byh2RmnaW
 
   jpa:
     hibernate:
@@ -10,7 +10,10 @@ spring:
     show-sql: true
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
 server:
   port: 8080
+
+
