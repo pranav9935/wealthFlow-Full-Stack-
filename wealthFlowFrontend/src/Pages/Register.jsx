@@ -12,28 +12,27 @@ function Register() {
   const [password, setPassword] = useState("");
 
  const handleRegister = async (e) => {
+
   e.preventDefault();
 
   try {
 
-    await api.post("/auth/register", {
+    const res = await api.post("/auth/register", {
       name,
       email,
       password
     });
 
-    toast.success("Account created successfully");
+    toast.success(res.data || "Account created successfully");
 
-    // SAVE EMAIL FOR OTP PAGE
+    // store email for otp page
     localStorage.setItem("verifyEmail", email);
 
-    setTimeout(() => {
-      navigate("/verify-otp");
-    }, 1200);
+    navigate("/verify-otp");
 
   } catch (err) {
 
-    if (err.response && err.response.data) {
+    if (err.response?.data) {
 
       if (err.response.data.includes("Email already exists")) {
         toast.error("This email is already registered");
@@ -42,12 +41,12 @@ function Register() {
       }
 
     } else {
-      toast.error("Registration failed. Please try again.");
+      toast.error("Registration failed");
     }
 
   }
-};
 
+};
   return (
 
     <div className="login-container">
