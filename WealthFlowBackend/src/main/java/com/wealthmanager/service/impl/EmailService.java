@@ -1,26 +1,39 @@
 package com.wealthmanager.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class EmailService {
 
-    private final JavaMailSender mailSender;
-     @Async
+    private final String API_KEY = System.getenv("re_P3KPYL9h_G1QgsyxPor8QfTwNFFS2VLcu");
+
     public void sendOtp(String email, String otp) {
 
-        SimpleMailMessage message = new SimpleMailMessage();
+        RestTemplate restTemplate = new RestTemplate();
 
-    message.setFrom("pranavmishra9807@gmail.com");
-    message.setTo(email);
-    message.setSubject("WealthFlow Email Verification");
-    message.setText("Your OTP is: " + otp);
+        String url = "https://api.resend.com/emails";
 
-    mailSender.send(message);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + API_KEY);
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("from", "WealthFlow <onboarding@resend.dev>");
+        body.put("to", email);
+        body.put("subject", "WealthFlow Email Verification");
+        body.put("text", "Your OTP is: " + otp);
+
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+
+        try {
+            restTemplate.postForEntity(url, request, String.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
