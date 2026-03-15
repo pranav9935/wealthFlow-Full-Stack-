@@ -1,48 +1,63 @@
 package com.wealthmanager.config;
-import org.springframework.http.HttpMethod;
-import com.wealthmanager.security.JwtAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import com.wealthmanager.security.JwtAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CorsConfigurationSource corsConfigurationSource;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            CorsConfigurationSource corsConfigurationSource) {
+
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.corsConfigurationSource = corsConfigurationSource;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable()).cors(cors -> {})
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-               .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/api/auth/**").permitAll()
-        .requestMatchers("/ws").permitAll()
-          .requestMatchers("/api/stocks/**").permitAll()
-        .requestMatchers("/topic/**").permitAll()
-        .requestMatchers("/api/test/**").authenticated()
-        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-        .anyRequest().authenticated()
-           )
-                
-                .formLogin(form -> form.disable())
-                .httpBasic(httpBasic -> httpBasic.disable());
+            .csrf(csrf -> csrf.disable())
 
-        http.addFilterBefore(jwtAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter.class);
+            // Enable CORS
+            .cors(cors -> cors.configurationSource(corsConfigurationSource))
+
+            // JWT should not use sessions
+            .sessionManagement(session ->
+                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+            .authorizeHttpRequests(auth -> auth
+
+                    // allow preflight requests
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                    // public endpoints
+                    .requestMatchers("/api/auth/**").permitAll()
+
+                    // websocket
+                    .requestMatchers("/ws/**").permitAll()
+                    .requestMatchers("/topic/**").permitAll()
+
+                    // everything else secured
+                    .anyRequest().authenticated()
+            );
+
+        // JWT filter
+        http.addFilterBefore(
+                jwtAuthenticationFilter,
+                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
+        );
 
         return http.build();
     }
