@@ -17,11 +17,19 @@ function Register() {
 
   try {
 
-    await api.post("/auth/register", {
-      name,
-      email,
-      password
-    });
+  await api.post(
+  "/auth/register",
+  {
+    name,
+    email,
+    password
+  },
+  {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }
+);
 
     toast.success("Account created successfully");
 

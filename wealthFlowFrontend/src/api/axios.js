@@ -1,7 +1,10 @@
 import axios from "axios";
 
 const api = axios.create({
-   baseURL: "https://trustworthy-blessing-production.up.railway.app/api"
+   baseURL: "https://trustworthy-blessing-production.up.railway.app/api",
+   headers: {
+    "Content-Type": "application/json"
+  }
 });
 
 api.interceptors.request.use((config) => {
