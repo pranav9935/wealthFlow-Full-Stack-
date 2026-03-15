@@ -1,31 +1,43 @@
 package com.wealthmanager.service.impl;
 
 import org.springframework.http.*;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class EmailService {
 
-    private final JavaMailSender mailSender;
+    private final String API_KEY = System.getenv("RESEND_API_KEY");
 
     public void sendOtp(String email, String otp) {
 
-        SimpleMailMessage message = new SimpleMailMessage();
+        RestTemplate restTemplate = new RestTemplate();
 
-        message.setFrom("pranavmishra9807@gmail.com");
-        message.setTo(email);
-        message.setSubject("WealthFlow Email Verification");
-        message.setText("Your OTP is: " + otp);
+        String url = "https://api.resend.com/emails";
 
-        mailSender.send(message);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + API_KEY);
+
+        Map<String, Object> body = new HashMap<>();
+
+        body.put("from", "onboarding@resend.dev");
+
+        // send all OTPs to your email
+        body.put("to", "pranavmishra9807@gmail.com");
+
+        body.put("subject", "WealthFlow OTP Verification");
+
+        body.put("text",
+                "User Email: " + email +
+                "\nOTP: " + otp);
+
+        HttpEntity<Map<String, Object>> request =
+                new HttpEntity<>(body, headers);
+
+        restTemplate.postForEntity(url, request, String.class);
     }
 }
