@@ -304,6 +304,28 @@ th, td {
   border-radius: 6px;
   padding: 10px;
 }
+
+.demo-box {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 15px;
+  font-size: 13px;
+  text-align: left;
+}
+
+.demo-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #111827;
+}
+
+.test-note {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #6b7280;
+}
 .sell-active {
   flex: 1;
   background: #dc2626;

@@ -87,6 +87,24 @@ function Login() {
 
         </form>
 
+        {/* Demo Login */}
+
+        <div className="demo-box">
+
+          <p className="demo-title">Demo Login</p>
+
+          <p>Email: <b>pranavmishra9807@gmail.com</b></p>
+          <p>Password: <b>12345</b></p>
+
+        </div>
+
+        {/* Testing Note */}
+
+        <p className="test-note">
+          OTP emails for account creation and verification are routed to
+          <b> pranavmishra9807@gmail.com </b> due to domain verification limits.
+        </p>
+
         <div className="divider"></div>
 
         <p className="register-text">
