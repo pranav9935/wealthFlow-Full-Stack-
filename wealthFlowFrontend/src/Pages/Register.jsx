@@ -11,33 +11,25 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = async (e) => {
-
+ const handleRegister = async (e) => {
   e.preventDefault();
 
   try {
 
-  await api.post(
-  "/auth/register",
-  {
-    name,
-    email,
-    password
-  },
-  {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  }
-);
+    await api.post("/auth/register", {
+      name,
+      email,
+      password
+    });
 
     toast.success("Account created successfully");
 
- setTimeout(() => {
-  navigate("/verify-otp", {
-    state: { email }
-  });
-}, 1200);
+    // SAVE EMAIL FOR OTP PAGE
+    localStorage.setItem("verifyEmail", email);
+
+    setTimeout(() => {
+      navigate("/verify-otp");
+    }, 1200);
 
   } catch (err) {
 
@@ -54,7 +46,6 @@ function Register() {
     }
 
   }
-
 };
 
   return (

@@ -7,16 +7,20 @@ import { toast } from "react-toastify";
 function VerifyOtp() {
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state?.email;
+  const email = location.state?.email || localStorage.getItem("verifyEmail");
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
-  useEffect(() => {
-    if (!email) {
-      navigate("/register", { replace: true });
-    }
-  }, [email, navigate]);
+ useEffect(() => {
+
+  const storedEmail = location.state?.email || localStorage.getItem("verifyEmail");
+
+  if (!storedEmail) {
+    navigate("/register", { replace: true });
+  }
+
+}, [location, navigate]);
 
   useEffect(() => {
     if (timer <= 0) {
@@ -37,6 +41,8 @@ function VerifyOtp() {
 
     try {
       await api.post("/auth/verify-otp", { email, otp });
+
+      localStorage.removeItem("verifyEmail");
       toast.success("Email verified successfully");
 
       setTimeout(() => {
