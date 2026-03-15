@@ -12,7 +12,7 @@ public class StockPriceConsumer {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-    @KafkaListener(topics = "stock-price-topic", groupId = "portfolio-group")
+    
     public void consume(String message) {
            System.out.println("Received from Kafka: " + message);
 
@@ -24,3 +24,4 @@ public class StockPriceConsumer {
     }
 
 }
+// @KafkaListener(topics = "stock-price-topic", groupId = "portfolio-group")
