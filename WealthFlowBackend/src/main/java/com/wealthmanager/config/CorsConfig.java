@@ -17,7 +17,8 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOriginPatterns(List.of(
-                "http://localhost:5173",        // local frontend
+                "http://localhost:5173",  
+                 "https://wealth-flow-full-stack.vercel.app",      // local frontend
                 "https://*.vercel.app"          // deployed frontend
         ));
 
