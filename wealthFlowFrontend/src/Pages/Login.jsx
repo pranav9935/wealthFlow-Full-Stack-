@@ -62,6 +62,9 @@ function Login() {
         <p className="subtitle">
           Smart Investment Portfolio Manager
         </p>
+        <p className="info-text">
+  Initial load may take up to 60s (free hosting cold start).
+</p>
 
         <form onSubmit={handleLogin}>
 

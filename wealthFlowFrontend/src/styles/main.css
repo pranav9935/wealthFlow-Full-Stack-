@@ -326,6 +326,11 @@ th, td {
   margin-top: 10px;
   color: #6b7280;
 }
+.info-text {
+  font-size: 11px;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
 .sell-active {
   flex: 1;
   background: #dc2626;
