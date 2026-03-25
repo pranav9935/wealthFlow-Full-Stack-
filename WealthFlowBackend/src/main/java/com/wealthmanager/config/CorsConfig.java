@@ -16,6 +16,7 @@ public class CorsConfig {
 
         config.setAllowedOriginPatterns(List.of(
                 "http://localhost:5173",
+                "https://*.vercel.app",
                 "https://wealth-flow-full-stack.vercel.app"
         ));
 
